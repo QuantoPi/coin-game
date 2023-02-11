@@ -18,6 +18,10 @@ class Main:
         coin.anchor_x = 'center'
         coin.anchor_y = 'center'
 
+        coin_icon = coin_gif = pyglet.image.load(
+            './sprites/coin/coin.png')
+        window.set_icon(coin_icon)
+
         platform = shapes.Rectangle(x=window.width // 2, y=window.height // 2-184,
                                     width=window.width, height=window.height // 2, color=(170, 141, 122))
         platform.anchor_x = platform.width // 2
