@@ -3,6 +3,7 @@ from pyglet.window import key
 from pyglet import shapes
 import random
 
+
 class Main:
     def run():
         window = pyglet.window.Window(800, 600, "UwU")
@@ -10,7 +11,6 @@ class Main:
         label = pyglet.text.Label('Coins: 0', font_name='Old School Adventures', font_size=16,
                                   x=75, y=window.height-25, anchor_x='center', anchor_y='center')
 
-        # platform = pyglet.image.load('./sprites/platform/platform.png')
         coin_gif = pyglet.image.load_animation(
             './sprites/coin/coin_animation.gif')
         coin = pyglet.sprite.Sprite(
@@ -62,15 +62,31 @@ class Main:
             return (sprite_1.x - sprite_2.x)**2 + (sprite_1.y - sprite_2.y)**2 < (sprite_1.width/2 + sprite_2.width/2)**2
 
         def update(dt):
-            global coins
+            global coins, jump, VELX, VELY
             if not 'coins' in globals():
                 coins = 0
+            if not 'jump' in globals():
+                jump = False
+            if not 'VELX' in globals():
+                VELX = 4
+            if not 'VELY' in globals():
+                VELY = 10
             if keys[key.A] or keys[key.LEFT]:
                 player.scale_x = -1
-                player.x -= 4
-            elif keys[key.D] or keys[key.RIGHT]:
+                player.x -= VELX
+            if keys[key.D] or keys[key.RIGHT]:
                 player.scale_x = 1
-                player.x += 4
+                player.x += VELX
+            if keys[key.W] and jump is False:
+                jump = True
+                print(player.y, VELY)
+            if jump is True:
+                print(player.y, VELY)
+                player.y += VELY*4
+                VELY -= 1
+                if VELY < -10:
+                    jump = False
+                    VELY = 10
             if detect_collision(player, coin):
                 coin_sound.play()
                 coins += 1
